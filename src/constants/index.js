@@ -1,1 +1,1 @@
-export const AUTH_LS_KEY = ""
+export const AUTH_LS_KEY = "JWT_KEY"
