@@ -6,7 +6,7 @@ import { store } from "./store";
 import { BrowserRouter } from "react-router-dom";
 import Router from "./router";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
     <BrowserRouter>
         {/* <Provider store={store}> */}
