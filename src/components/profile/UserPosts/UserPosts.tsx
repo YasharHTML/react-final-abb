@@ -2,6 +2,7 @@ import { PostItem } from "../PostItem/PostItem";
 import { RootState } from "../../../store/index";
 import { useSelector } from "react-redux";
 
+
 const UserPosts = () => {
   const posts = useSelector((state: RootState) => state.user.user.posts);
 

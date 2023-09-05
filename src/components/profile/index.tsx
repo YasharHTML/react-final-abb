@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/index";
 import { fetchUser } from "../../features/user/userSlice";
 import ErrorPage from "../../pages/ErrorPage";
+import Modal from "../modal/Modal";
 
 const UserProfile = () => {
   const { username } = useParams();
@@ -40,6 +41,7 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
+      <Modal/>
     </>
   );
 };
