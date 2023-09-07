@@ -1,4 +1,4 @@
-export const CloseIcon = ({ fill, size }: any) => {
+export const CloseIcon = ({ fill, size }: {fill:string, size: number}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

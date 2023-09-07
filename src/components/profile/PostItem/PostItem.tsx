@@ -1,4 +1,5 @@
 import { LikeIcon } from "../../../icons/LikeIcon";
+import { CommentIcon } from "../../../icons/CommentIcon";
 import { setModal } from "../../../features/modal/modalSlice";
 import { useDispatch } from "react-redux";
 
@@ -7,7 +8,7 @@ export const PostItem = ({ post }: any) => {
 
   return (
     <>
-      <div className="cursor-pointer relative" onClick={()=>dispatch(setModal(true))}>
+      <div className="cursor-pointer relative" onClick={()=>dispatch(setModal({isModalOpen: true, post: post}))}>
         <img
           src={post.imageUrl}
           className="max-w-full object-cover xl:h-96 lg:h-72 md:h-72 sm:h-40 xs:h-40 w-full"
@@ -19,7 +20,7 @@ export const PostItem = ({ post }: any) => {
           </button>
           <span className="text-lg text-white ml-1">{post.likes.length} </span>
           <button className="ml-6">
-            <LikeIcon />
+            <CommentIcon />
           </button>
           <span className="text-lg text-white ml-1">
             {post.comments.length}

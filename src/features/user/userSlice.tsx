@@ -6,9 +6,9 @@ interface Response {
 }
 
 interface UserData {
-  username: any;
-  firstName: any;
-  lastName: any;
+  username:  any;
+  firstName: string;
+  lastName: string;
   posts: [];
   subscriptions: [];
   subscribers: [];
@@ -35,6 +35,7 @@ export const fetchUser = createAsyncThunk<UserData, any>(
       }
 
       const responseData: Response = await response.json();
+
       return responseData.data;
       
     } catch (error) {

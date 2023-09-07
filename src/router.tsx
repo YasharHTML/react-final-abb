@@ -5,13 +5,13 @@ import ProfilePage from "./pages/ProfilePage";
 import PostPage from "./pages/PostPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import Navbar from "./components/layout/Navbar";
+import Header from "./components/layout/header/Header";
 import ErrorPage from "./pages/ErrorPage";
 
 export default function Router() {
   return (
     <>
-      <Navbar />
+      <Header />
 
       <Routes>
         <Route path="/" element={<HomePage />} />
