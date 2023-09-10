@@ -12,6 +12,7 @@ const UserProfile = () => {
   const { username } = useParams();
   const loading = useSelector((state: RootState) => state.user.loading);
   const posts = useSelector((state: RootState) => state.user.user.posts);
+  const error = useSelector((state: RootState) => state.user.error);
 
   const dispatch = useDispatch();
 
@@ -26,22 +27,25 @@ const UserProfile = () => {
           <div className="text-black pt-4 pb-10">
             {loading ? (
               <p className="text-2xl text-center">Loading...</p>
+            ) : error ? (
+              <ErrorPage />
             ) : (
               <>
-                {posts !== undefined ? (
+                <ProfileHeader />
+
+                {posts && posts.length ? (
                   <>
-                    <ProfileHeader />
                     <UserPosts />
                   </>
                 ) : (
-                  <ErrorPage />
+                  <h1 className="text-center text-2xl mt-16">No posts yet</h1>
                 )}
               </>
             )}
           </div>
         </div>
       </div>
-      <PostModal/>
+      <PostModal />
     </>
   );
 };

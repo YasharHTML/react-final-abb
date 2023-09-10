@@ -1,23 +1,46 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 interface Response {
   success: string;
   data: UserData;
 }
 
-interface UserData {
-  username:  any;
-  firstName: string;
-  lastName: string;
-  posts: [];
-  subscriptions: [];
-  subscribers: [];
+
+export interface Comments {
+  commentId: string;
+  authorUsername: string;
+  text: string;
+}
+
+interface Likes {
+  authorUsername: string;
+}
+
+export interface Post {
+  authorUsername: string;
+  postId: string;
+  caption: string;
+  imageUrl: string;
+  comments: Comments[];
+  likes: Likes[];
+  location: string;
+  timestamp: number;
 }
 
 
+
+export interface UserData {
+  username: string;
+  firstName: string;
+  lastName: string;
+  posts: Post [];
+  subscriptions: string[];
+  subscribers: any[];
+}
+
 export const fetchUser = createAsyncThunk<UserData, any>(
   "user/fetchUser",
-  async (username: any) => {
+  async (username: string) => {
     try {
       const response = await fetch(
         `https://instagram.brightly-shining.cloud/api/v1/user?username=${username}`,
@@ -31,7 +54,7 @@ export const fetchUser = createAsyncThunk<UserData, any>(
       );
 
       if (!response.ok) {
-        throw new Error('Error');
+        throw new Error("Error");
       }
 
       const responseData: Response = await response.json();
@@ -44,9 +67,11 @@ export const fetchUser = createAsyncThunk<UserData, any>(
   }
 );
 
+
 const initialState = {
   user: {} as UserData,
-  loading: true
+  loading: true,
+  error: null as string | null
 };
 
 const userSlice = createSlice({
@@ -57,14 +82,19 @@ const userSlice = createSlice({
     builder
       .addCase(fetchUser.pending, (state) => {
         state.loading = true;
+        state.error = null
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
+      .addCase(
+        fetchUser.fulfilled,
+        (state, action: PayloadAction<UserData>) => {
+          state.loading = false;
+          state.user = action.payload;
+        state.error = null
+        }
+      )
+      .addCase(fetchUser.rejected, (state,action) => {
         state.loading = false;
-        state.user = action.payload;
-      })
-      .addCase(fetchUser.rejected, (state, action) => {
-        state.loading = false;
-
+        state.error =action.error.message ?? null;
       });
   },
 });
