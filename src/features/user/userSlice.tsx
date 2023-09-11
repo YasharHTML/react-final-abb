@@ -5,7 +5,6 @@ interface Response {
   data: UserData;
 }
 
-
 export interface Comments {
   commentId: string;
   authorUsername: string;
@@ -27,13 +26,11 @@ export interface Post {
   timestamp: number;
 }
 
-
-
 export interface UserData {
   username: string;
   firstName: string;
   lastName: string;
-  posts: Post [];
+  posts: Post[];
   subscriptions: string[];
   subscribers: any[];
 }
@@ -41,6 +38,8 @@ export interface UserData {
 export const fetchUser = createAsyncThunk<UserData, any>(
   "user/fetchUser",
   async (username: string) => {
+    const token = localStorage.getItem('token') || null;
+
     try {
       const response = await fetch(
         `https://instagram.brightly-shining.cloud/api/v1/user?username=${username}`,
@@ -48,7 +47,7 @@ export const fetchUser = createAsyncThunk<UserData, any>(
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer ec8bd96c25fb46319cdf49779182333c",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -60,18 +59,16 @@ export const fetchUser = createAsyncThunk<UserData, any>(
       const responseData: Response = await response.json();
 
       return responseData.data;
-      
     } catch (error) {
       throw error;
     }
   }
 );
 
-
 const initialState = {
   user: {} as UserData,
   loading: true,
-  error: null as string | null
+  error: null as string | null,
 };
 
 const userSlice = createSlice({
@@ -82,19 +79,19 @@ const userSlice = createSlice({
     builder
       .addCase(fetchUser.pending, (state) => {
         state.loading = true;
-        state.error = null
+        state.error = null;
       })
       .addCase(
         fetchUser.fulfilled,
         (state, action: PayloadAction<UserData>) => {
           state.loading = false;
           state.user = action.payload;
-        state.error = null
+          state.error = null;
         }
       )
-      .addCase(fetchUser.rejected, (state,action) => {
+      .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
-        state.error =action.error.message ?? null;
+        state.error = action.error.message ?? null;
       });
   },
 });

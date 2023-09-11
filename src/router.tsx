@@ -24,7 +24,14 @@ export default function Router() {
           }
         />
 
-        <Route path="/profile/:username" element={<ProfilePage />} />
+        <Route
+          path="/profile/:username"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />

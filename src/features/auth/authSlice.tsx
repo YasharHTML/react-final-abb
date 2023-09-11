@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getStateFromLocalStorage } from "../../utils";
 
 const initialState = {
-  token: getStateFromLocalStorage("token") || null,
+  token: localStorage.getItem("token") || null,
   error: null as string | null,
 };
 
@@ -25,8 +24,11 @@ export const loginUser = createAsyncThunk(
         throw new Error("Error");
       }
 
-      const responseData: any = await response.text();
-      return responseData;
+      const responseData: any = await response.json();
+      if (responseData && responseData.token) {
+        const token = responseData.token;
+        return token;
+      }
     } catch (error) {
       throw error;
     }
