@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setModal } from "../../features/modal/modalSlice";
-import { RootState } from "../../store";
-import { CloseIcon } from "../../icons/CloseIcon";
-import { UserData } from "../../features/user/userSlice";
-import { Comments, Post } from "../../features/user/userSlice";
-import { LikeIcon } from "../../icons/LikeIcon";
-import { CommentIcon } from "../../icons/CommentIcon";
+import { setModal } from "../../../features/modal/modalSlice";
+import { RootState } from "../../../store";
+import { CloseIcon } from "../../../icons/CloseIcon";
+import { UserData } from "../../../features/user/userSlice";
+import { Comments, Post } from "../../../features/user/userSlice";
+import { LikeIcon } from "../../../icons/LikeIcon";
+import { CommentIcon } from "../../../icons/CommentIcon";
+import { Link } from "react-router-dom";
 
 const PostModal = () => {
   const isModalOpen = useSelector(
@@ -25,7 +26,7 @@ const PostModal = () => {
     return date.toLocaleDateString(undefined, {
       year: "numeric",
       month: "long",
-      day: "numeric"
+      day: "numeric",
     });
   };
 
@@ -55,12 +56,12 @@ const PostModal = () => {
                 />
               </div>
               <div className="border-l border-gray-200 w-4/12 overflow-y-scroll">
-                <div className="border-b border-gray-200 py-2 px-3 sticky top-0 bg-white">
+                <div className="border-b border-gray-200 py-2 px-3 sticky top-0 bg-white overflow-x-auto">
                   <div className="flex items-center">
                     <div className="w-12 h-12">
                       <img
                         src="../profile.jpg"
-                        className="max-w-full w-full h-full rounded-full"
+                        className="max-w-full w-full rounded-full"
                         alt=""
                       />
                     </div>
@@ -78,7 +79,12 @@ const PostModal = () => {
                         className="flex items-center mt-1"
                       >
                         <h5 className="text-base font-medium">
-                          {comment.authorUsername}
+                          <Link
+                            onClick={closeModal}
+                            to={`/profile/${comment.authorUsername}`}
+                          >
+                            {comment.authorUsername}
+                          </Link>
                         </h5>
 
                         <p className="text-base ml-2">{comment.text}</p>

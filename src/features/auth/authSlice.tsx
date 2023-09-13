@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-    token: localStorage.getItem("token") || null,
-    error: null as string | null,
+  token: localStorage.getItem("token") || null,
+  username: localStorage.getItem('username') || null,
+  error: null as string | null,
 };
 
 export const loginUser = createAsyncThunk(
@@ -67,10 +68,26 @@ export const registerUser = createAsyncThunk(
         } catch (error) {
             throw error;
         }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error");
+      }
+
+      const responseData: any = await response.json();
+      if (responseData && responseData.token) {
+        const token = responseData.token;
+        localStorage.setItem("token", token);
+        localStorage.setItem("username", credentials.username);
+        return token;
+      }
+    } catch (error) {
+      throw error;
     }
 );
 
 const authSlice = createSlice({
+
     name: "auth",
     initialState,
     reducers: {

@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
+const token = localStorage.getItem("token") || null;
+
 interface Response {
   success: string;
   data: UserData;
@@ -26,20 +28,31 @@ export interface Post {
   timestamp: number;
 }
 
+export interface Subscribers {
+  firstName: string;
+  lastName: string;
+  username: string;
+}
+
 export interface UserData {
   username: string;
   firstName: string;
   lastName: string;
   posts: Post[];
-  subscriptions: string[];
-  subscribers: any[];
+  subscriptions: any[];
+  subscribers: Subscribers[];
 }
+
+const initialState = {
+  user: {} as UserData,
+  loading: true,
+  error: null as string | null,
+  subscribers: [] as Subscribers[],
+};
 
 export const fetchUser = createAsyncThunk<UserData, any>(
   "user/fetchUser",
   async (username: string) => {
-    const token = localStorage.getItem('token') || null;
-
     try {
       const response = await fetch(
         `https://instagram.brightly-shining.cloud/api/v1/user?username=${username}`,
@@ -65,11 +78,60 @@ export const fetchUser = createAsyncThunk<UserData, any>(
   }
 );
 
-const initialState = {
-  user: {} as UserData,
-  loading: true,
-  error: null as string | null,
-};
+export const subscribe = createAsyncThunk(
+  "user/subscribe",
+  async (user: Subscribers) => {
+    try {
+      const response = await fetch(
+        "https://instagram.brightly-shining.cloud/api/v1/user/subscription",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(user),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error");
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const unsubscribe = createAsyncThunk(
+  "user/unsubscribe",
+  async (username: string) => {
+    try {
+      const response = await fetch(
+        `https://instagram.brightly-shining.cloud/api/v1/user/subscription?username=${username}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error");
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -92,6 +154,13 @@ const userSlice = createSlice({
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? null;
+      })
+      .addCase(subscribe.fulfilled, (state, action) => {
+        state.subscribers = action.payload;
+      })
+      .addCase(unsubscribe.fulfilled, (state, action) => {
+        state.subscribers = state.user.subscribers.filter(subscriber => subscriber.username !== action.payload.username);
+
       });
   },
 });

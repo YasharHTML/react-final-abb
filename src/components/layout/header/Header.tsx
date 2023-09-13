@@ -6,15 +6,15 @@ import { logout } from "../../../features/auth/authSlice";
 
 const Header = () => {
   const token = useSelector((state: RootState) => state.auth.token);
-  const dispatch = useDispatch()
+  const username = useSelector((state: RootState) => state.auth.username);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  const handleLogout =()=> {
-    dispatch(logout())
-    navigate('/auth/login')
-    
-  }
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/auth/login");
+  };
   return (
     <header>
       <nav className="bg-white border-gray-200 border-b px-4 lg:px-6 py-2.5">
@@ -27,11 +27,23 @@ const Header = () => {
 
           <div className="flex items-center">
             {token ? (
-              <button
-              onClick={handleLogout} 
-              className="text-gray-800 cursor-pointer hover:bg-gray-50 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none">
-                Logout
-              </button>
+              <>
+                <button className="text-gray-800 cursor-pointer hover:bg-gray-50 font-medium rounded-lg text-sm mr-2 focus:outline-none">
+                  <Link to={`/profile/${username}`}>
+                    <img
+                      src="../profile.jpg"
+                      className="max-w-full h-10 w-full"
+                      alt=""
+                    />
+                  </Link>
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-800 cursor-pointer hover:bg-gray-50 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <Link to="/auth/login">
