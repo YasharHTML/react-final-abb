@@ -2,11 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   token: localStorage.getItem("token") || null,
+  error: null as string | null,
 };
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
-  async (credentials: { username: string; password: any }) => {
+  async (credentials: { username: string; password: string }) => {
     try {
       const response = await fetch(
         "https://instagram.brightly-shining.cloud/api/v1/auth/login",
@@ -23,27 +24,38 @@ export const loginUser = createAsyncThunk(
         throw new Error("Error");
       }
 
-      const responseData: any = await response.text();
-      return responseData;
+      const responseData: any = await response.json();
+      if (responseData && responseData.token) {
+        const token = responseData.token;
+        return token;
+      }
     } catch (error) {
       throw error;
     }
   }
 );
 
-
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.token = null;
+      localStorage.removeItem("token");
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
         state.token = action.payload;
         localStorage.setItem("token", action.payload);
       })
-    
+      .addCase(loginUser.rejected, (state, action) => {
+        state.error = action.error.message ?? null;
+      });
   },
 });
+
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

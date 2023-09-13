@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Header from "./components/layout/header/Header";
 import ErrorPage from "./pages/ErrorPage";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 export default function Router() {
   return (
@@ -14,14 +15,27 @@ export default function Router() {
       <Header />
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/profile/:username" element={<ProfilePage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile/:username"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="*" element={<ErrorPage />} />
-
-
       </Routes>
     </>
   );
