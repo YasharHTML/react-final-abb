@@ -28,6 +28,7 @@ export const loginUser = createAsyncThunk(
             const responseData: any = await response.json();
             if (responseData && responseData.token) {
                 const token = responseData.token;
+                localStorage.setItem("username", credentials.username);
                 return token;
             }
         } catch (error) {
@@ -63,6 +64,7 @@ export const registerUser = createAsyncThunk(
             const responseData: any = await response.json();
             if (responseData && responseData.token) {
                 const token = responseData.token;
+                localStorage.setItem("username", credentials.username);
                 return token;
             }
         } catch (error) {
@@ -91,6 +93,7 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.token = action.payload;
+                localStorage.setItem("token", action.payload);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.error = action.error.message ?? null;
