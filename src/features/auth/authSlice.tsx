@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   token: localStorage.getItem("token") || null,
+  username: localStorage.getItem('username') || null,
   error: null as string | null,
 };
 
@@ -27,6 +28,8 @@ export const loginUser = createAsyncThunk(
       const responseData: any = await response.json();
       if (responseData && responseData.token) {
         const token = responseData.token;
+        localStorage.setItem("token", token);
+        localStorage.setItem("username", credentials.username);
         return token;
       }
     } catch (error) {
@@ -42,13 +45,14 @@ const authSlice = createSlice({
     logout: (state) => {
       state.token = null;
       localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      state.error = null
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
         state.token = action.payload;
-        localStorage.setItem("token", action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.error.message ?? null;

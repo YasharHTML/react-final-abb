@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/index";
 import { fetchUser } from "../../features/user/userSlice";
 import ErrorPage from "../../pages/ErrorPage";
-import PostModal from "../PostModal/PostModal";
+import PostModal from "./PostModal/PostModal";
 
 const UserProfile = () => {
   const { username } = useParams();
