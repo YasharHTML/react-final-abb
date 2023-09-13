@@ -5,7 +5,6 @@ import { RootState } from "../store";
 import { registerUser } from "../features/auth/authSlice";
 
 export default function RegisterPage() {
-    const error = useSelector((state: RootState) => state.auth.error);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,7 +22,7 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const result = await dispatch(registerUser(user) as any);
+        await dispatch(registerUser(user) as any);
         navigate("/");
     };
 
