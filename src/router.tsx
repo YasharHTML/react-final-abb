@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import Header from "./components/layout/header/Header";
 import ErrorPage from "./pages/ErrorPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import Footer from "./components/layout/footer/Footer";
 
 export default function Router() {
   return (
@@ -37,6 +38,8 @@ export default function Router() {
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+
+      <Footer/>
     </>
   );
 }
