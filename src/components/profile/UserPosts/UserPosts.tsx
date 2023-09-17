@@ -1,8 +1,9 @@
 import { PostItem } from "../PostItem/PostItem";
 import { RootState } from "../../../store/index";
 import { useSelector } from "react-redux";
-import { Post } from "../../../features/user/userSlice";
+
 import ProfileLayout from "../ProfileLayout/ProfileLayout";
+import { Post } from "../../../models/Post";
 
 const UserPosts = () => {
   const posts = useSelector(

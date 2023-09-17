@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setModal } from "../../../features/modal/modalSlice";
 import { RootState } from "../../../store";
-import { UserData } from "../../../features/user/userSlice";
-import { Comments, Post } from "../../../features/user/userSlice";
 import { AiOutlineHeart, AiOutlineClose} from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import Comment from "../../comments/Comment";
+import { Post } from "../../../models/Post";
+import { UserData } from "../../../models/UserData";
+import { Comments } from "../../../models/Comment";
 
 
 const PostModal = () => {

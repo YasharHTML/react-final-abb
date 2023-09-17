@@ -1,44 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { UserData } from "../../models/UserData";
+import { Subscribers } from "../../models/Subscriber";
 
 interface Response {
   success: string;
   data: UserData;
-}
-
-export interface Comments {
-  commentId: string;
-  authorUsername: string;
-  text: string;
-}
-
-interface Likes {
-  authorUsername: string;
-}
-
-export interface Post {
-  authorUsername: string;
-  postId: string;
-  caption: string;
-  imageUrl: string;
-  comments: Comments[];
-  likes: Likes[];
-  location: string;
-  timestamp: number;
-}
-
-export interface Subscribers {
-  firstName: string;
-  lastName: string;
-  username: string;
-}
-
-export interface UserData {
-  username: string;
-  firstName: string;
-  lastName: string;
-  posts: Post[];
-  subscriptions: any[];
-  subscribers: Subscribers[];
 }
 
 const initialState = {
@@ -50,12 +16,12 @@ const initialState = {
 
 export const fetchUser = createAsyncThunk<UserData, any>(
   "user/fetchUser",
-  async (username: string) => {
+  async (username?: string) => {
     const token = localStorage.getItem("token") || null;
 
     try {
       const response = await fetch(
-        `https://instagram.brightly-shining.cloud/api/v1/user?username=${username}`,
+        `https://instagram.brightly-shining.cloud/api/v1/user?username=${username ?? localStorage.getItem("username")}`,
         {
           method: "GET",
           headers: {
@@ -136,6 +102,8 @@ export const unsubscribe = createAsyncThunk(
     }
   }
 );
+
+export 
 
 const userSlice = createSlice({
   name: "user",
