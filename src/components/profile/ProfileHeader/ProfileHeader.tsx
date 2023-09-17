@@ -10,8 +10,6 @@ const ProfileHeader = () => {
     user.subscribers.some((subscriber) => subscriber.username === username)
   );
 
-  console.log(user.subscribers);
-
   const dispatch = useDispatch();
 
   const handleFollow = async () => {
@@ -44,7 +42,8 @@ const ProfileHeader = () => {
         />
       </div>
       <div className="flex items-center lg:ml-20 md:ml-20 sm:ml-0">
-        <h3 className="text-2xl">{"@" + user.username}</h3>
+          <h3 className="text-2xl">{"@" + user.username}</h3>
+
         {user.username !== username ? (
           <button
             onClick={handleFollow}
@@ -56,6 +55,7 @@ const ProfileHeader = () => {
           ""
         )}
       </div>
+      
     </div>
   );
 };

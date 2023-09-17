@@ -22,7 +22,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full min-h-screen">
         <div className="container mx-auto">
           <div className="text-black pt-4 pb-10">
             {loading ? (

@@ -28,13 +28,14 @@ const Header = () => {
           <div className="flex items-center">
             {token ? (
               <>
-                <button className="text-gray-800 cursor-pointer hover:bg-gray-50 font-medium rounded-lg text-sm mr-2 focus:outline-none">
-                  <Link to={`/profile/${username}`}>
+                <button className="text-gray-800  cursor-pointer hover:bg-gray-50 font-medium rounded-lg text-sm mr-2 focus:outline-none">
+                  <Link to={`/profile/${username}`} className="flex items-center">
                     <img
                       src="../profile.jpg"
                       className="max-w-full h-10 w-full"
                       alt=""
                     />
+                    <span>{`@${username}`}</span>
                   </Link>
                 </button>
                 <button

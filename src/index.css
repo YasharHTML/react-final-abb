@@ -15,24 +15,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-.
-.profile-img-box {
-  left: -5px;
-  position: absolute;
-  top: -5px;
-  height: 42px;
-  width: 42px;
-  border-radius: 50%;
-  border: 1px solid gray;
-}
-.profile-img-box > img {
-  height: 32px;
-  width: 32px;
-}
-.post-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}

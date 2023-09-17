@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-const token = localStorage.getItem("token") || null;
-
 interface Response {
   success: string;
   data: UserData;
@@ -53,6 +51,8 @@ const initialState = {
 export const fetchUser = createAsyncThunk<UserData, any>(
   "user/fetchUser",
   async (username: string) => {
+    const token = localStorage.getItem("token") || null;
+
     try {
       const response = await fetch(
         `https://instagram.brightly-shining.cloud/api/v1/user?username=${username}`,
@@ -82,6 +82,8 @@ export const subscribe = createAsyncThunk(
   "user/subscribe",
   async (user: Subscribers) => {
     try {
+      const token = localStorage.getItem("token") || null;
+
       const response = await fetch(
         "https://instagram.brightly-shining.cloud/api/v1/user/subscription",
         {
@@ -109,6 +111,8 @@ export const subscribe = createAsyncThunk(
 export const unsubscribe = createAsyncThunk(
   "user/unsubscribe",
   async (username: string) => {
+    const token = localStorage.getItem("token") || null;
+
     try {
       const response = await fetch(
         `https://instagram.brightly-shining.cloud/api/v1/user/subscription?username=${username}`,
@@ -159,8 +163,9 @@ const userSlice = createSlice({
         state.subscribers = action.payload;
       })
       .addCase(unsubscribe.fulfilled, (state, action) => {
-        state.subscribers = state.user.subscribers.filter(subscriber => subscriber.username !== action.payload.username);
-
+        state.subscribers = state.user.subscribers.filter(
+          (subscriber) => subscriber.username !== action.payload.username
+        );
       });
   },
 });

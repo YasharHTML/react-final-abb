@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setModal } from "../../../features/modal/modalSlice";
 import { RootState } from "../../../store";
-import { CloseIcon } from "../../../icons/CloseIcon";
 import { UserData } from "../../../features/user/userSlice";
 import { Comments, Post } from "../../../features/user/userSlice";
-import { LikeIcon } from "../../../icons/LikeIcon";
-import { CommentIcon } from "../../../icons/CommentIcon";
-import { Link } from "react-router-dom";
+import { AiOutlineHeart, AiOutlineClose} from "react-icons/ai";
+import { FaRegComment } from "react-icons/fa";
+import Comment from "../../comments/Comment";
+
 
 const PostModal = () => {
   const isModalOpen = useSelector(
@@ -43,7 +43,7 @@ const PostModal = () => {
             className="fixed top-4 right-4 cursor-pointer"
             onClick={closeModal}
           >
-            <CloseIcon fill="#fff" size={36} />
+            <AiOutlineClose className="text-white text-4xl"/>
           </div>
 
           <div className="bg-white overflow-hidden rounded-sm w-8/12  h-5/6 my-auto mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -51,7 +51,7 @@ const PostModal = () => {
               <div className="w-8/12 flex h-full justify-center">
                 <img
                   src={post.imageUrl}
-                  className="max-w-full w-full object-cover"
+                  className="max-w-full w-full object-cover cursor-pointer"
                   alt=""
                 />
               </div>
@@ -74,31 +74,25 @@ const PostModal = () => {
                 <div className="py-2 px-3 overflow-y-auto flex-grow">
                   {post.comments?.map((comment: Comments) => {
                     return (
-                      <div
-                        key={comment.commentId}
-                        className="flex items-center mt-1"
-                      >
-                        <h5 className="text-base font-medium">
-                          <Link
-                            onClick={closeModal}
-                            to={`/profile/${comment.authorUsername}`}
-                          >
-                            {comment.authorUsername}
-                          </Link>
-                        </h5>
-
-                        <p className="text-base ml-2">{comment.text}</p>
-                      </div>
+                      <Comment
+                      key={comment.commentId}
+                      authorUsername={comment.authorUsername}
+                      commentId={comment.commentId}
+                      text={comment.text}
+                      containerClassName='flex items-center mt-1'
+                      closeModal = {closeModal}
+                      />
+                  
                     );
                   })}
                 </div>
                 <div className="border-t border-gray-200 py-2 px-3 fixed w-full bottom-0 bg-white">
                   <div className="flex gap-3 mb-2">
-                    <span className="cursor-pointer">
-                      <LikeIcon />
+                    <span className="cursor-pointer text-3xl">
+                      <AiOutlineHeart />
                     </span>
-                    <span className="cursor-pointer">
-                      <CommentIcon />
+                    <span className="cursor-pointer text-3xl">
+                      <FaRegComment />
                     </span>
                   </div>
 
