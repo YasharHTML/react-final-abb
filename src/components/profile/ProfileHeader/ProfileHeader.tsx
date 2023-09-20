@@ -37,7 +37,7 @@ const ProfileHeader = () => {
       <div className="border-transparent border-4">
         <img
           src="../profile.jpg"
-          className="max-w-full w-40 h-40 object-cover rounded-full bg-gray-200"
+          className="w-40 h-40 object-cover rounded-full bg-gray-200"
           alt=""
         />
       </div>

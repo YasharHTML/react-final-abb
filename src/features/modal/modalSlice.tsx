@@ -15,6 +15,7 @@ const modalSlice = createSlice({
     name: "modal",
     initialState,
     reducers: {
+       
         setModal: (state, action: PayloadAction<PostModal>) => {
             state.isModalOpen = action.payload.isModalOpen;
             state.post = action.payload.post;

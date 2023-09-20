@@ -3,6 +3,7 @@ import { InstagramIcon } from "../../../icons/InstagramIcon";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../features/auth/authSlice";
+import { BsUpload } from "react-icons/bs";
 
 const Header = () => {
   const token = useSelector((state: RootState) => state.auth.token);
@@ -15,6 +16,7 @@ const Header = () => {
     dispatch(logout());
     navigate("/auth/login");
   };
+
   return (
     <header>
       <nav className="bg-white border-gray-200 border-b px-4 lg:px-6 py-2.5">
@@ -28,11 +30,18 @@ const Header = () => {
           <div className="flex items-center">
             {token ? (
               <>
+                <Link to="/upload" className="mr-3 text-2xl">
+                  <BsUpload />
+                </Link>
+
                 <button className="text-gray-800  cursor-pointer hover:bg-gray-50 font-medium rounded-lg text-sm mr-2 focus:outline-none">
-                  <Link to={`/profile/${username}`} className="flex items-center">
+                  <Link
+                    to={`/profile/${username}`}
+                    className="flex items-center"
+                  >
                     <img
                       src="../profile.jpg"
-                      className="max-w-full h-10 w-full"
+                      className="h-10 w-10"
                       alt=""
                     />
                     <span>{`@${username}`}</span>
