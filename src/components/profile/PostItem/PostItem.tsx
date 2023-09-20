@@ -11,12 +11,12 @@ export const PostItem = ({
   isInProfile: boolean;
 }) => {
   const dispatch = useDispatch();
-
   const handleOpenModal = () => {
     if (isInProfile) {
       dispatch(setModal({ isModalOpen: true, post: post }));
     }
   };
+ 
 
   return (
     <>

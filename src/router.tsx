@@ -9,6 +9,7 @@ import Header from "./components/layout/header/Header";
 import ErrorPage from "./pages/ErrorPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import Footer from "./components/layout/footer/Footer";
+import Upload from "./pages/Upload";
 
 export default function Router() {
   return (
@@ -36,6 +37,14 @@ export default function Router() {
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
+        <Route
+          path="/upload"
+          element={
+            <ProtectedRoute>
+              <Upload />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
 

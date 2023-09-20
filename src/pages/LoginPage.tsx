@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="bg-white-100 p-6">
+      <div className="bg-white-100 p-6 min-h-screen">
         <div className="max-w-md mx-auto bg-white rounded p-8 shadow-md border border-gray-300">
           <h2 className="text-2xl font-semibold mb-4">Login</h2>
           <Formik

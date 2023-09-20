@@ -4,16 +4,27 @@ import {
   AiOutlinePlusCircle,
   AiOutlineSend,
   AiOutlineHeart,
+  AiFillHeart,
 } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import Comment from "../comments/Comment";
+import usePostActions from "../../utils/usePostActions";
 
 const FeedItem = ({ feedPost }: any) => {
-  const [showAll, setShowAll] = useState(false);
+  const { 
+    isLiked,
+    likeCount,
+    comment,
+    localComments,
+    handleLike,
+    handleComment,
+    handleDeleteComment,
+    setComment,
+  } = usePostActions(feedPost.postId, feedPost.likes, feedPost.comments);
 
-  const filteredComments = showAll
-    ? feedPost.comments
-    : feedPost.comments.slice(-1);
+
+  const [showAll, setShowAll] = useState(false);
+  const filteredComments = showAll ? localComments : localComments.slice(-1);
 
   const formatDate = (postTime: number): string => {
     const now = new Date();
@@ -34,13 +45,10 @@ const FeedItem = ({ feedPost }: any) => {
     }
   };
 
-  const handleLike = () => {
-    console.log("liked");
-  };
 
   return (
     <>
-      <div className="my-8 w-3/6 xs:w-5/6 lg:w-3/6 xl:w-3/6 py-1 border-gray-200 border">
+      <div className="my-8 w-4/6 xs:w-5/6 lg:w-4/6 xl:w-4/6 py-1 border-gray-200 border">
         <div className="flex items-center">
           <div>
             <img
@@ -66,7 +74,14 @@ const FeedItem = ({ feedPost }: any) => {
         </div>
         <div className="flex gap-3 items-center">
           <span className="cursor-pointer text-3xl">
-            <AiOutlineHeart />
+            {isLiked ? (
+              <AiFillHeart
+                className="text-red-600"
+                onClick={handleLike}
+              />
+            ) : (
+              <AiOutlineHeart onClick={handleLike} />
+            )}
           </span>
           <span className="cursor-pointer text-3xl">
             <FaRegComment />
@@ -74,10 +89,10 @@ const FeedItem = ({ feedPost }: any) => {
         </div>
 
         <div className="ml-1">
-          {feedPost.likes.length ? (
+          {likeCount ? (
             <>
               <h5 className="text-base font-medium">
-                {feedPost.likes.length}
+                {likeCount}
                 <span className="text-base ml-1">likes</span>
               </h5>
             </>
@@ -96,9 +111,9 @@ const FeedItem = ({ feedPost }: any) => {
           ""
         )}
 
-        {feedPost.comments.length ? (
+        {localComments.length ? (
           <>
-            {!showAll && feedPost.comments.length > 1 ? (
+            {!showAll && localComments.length > 1 ? (
               <button onClick={() => setShowAll(true)} className="ml-1">
                 <AiOutlinePlusCircle className="text-2xl mt-2" />
               </button>
@@ -111,13 +126,14 @@ const FeedItem = ({ feedPost }: any) => {
                 commentId: string;
                 text: string;
               }) => {
-                return (  
+                return (
                   <Comment
                     key={comment.commentId}
                     authorUsername={comment.authorUsername}
                     commentId={comment.commentId}
                     text={comment.text}
-                    containerClassName='ml-1'
+                    containerClassName="ml-1"
+                    deleteComment={() => handleDeleteComment(comment.commentId)}
                   />
                 );
               }
@@ -129,16 +145,23 @@ const FeedItem = ({ feedPost }: any) => {
 
         <div className="bg-white rounded-sm shadow-md py-2 px-1">
           <div className="flex items-center">
-            <input
-              id=""
-              name=""
-              type="text"
-              placeholder="Add a comment..."
-              className="w-full  p-1 rounded-sm focus:outline-none focus:border-blue-500"
-            />
-            <button className="ml-2  text-white font-semibold px-1 py-1 rounded-sm text-2xl">
-              <AiOutlineSend className="text-black" />
-            </button>
+            <form
+              onSubmit={handleComment}
+              className="flex w-full"
+            >
+              <input
+                id="postComment"
+                name="postComment"
+                type="text"
+                placeholder="Add a comment..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="w-full  p-1 rounded-sm focus:outline-none focus:border-blue-500"
+              />
+              <button className="ml-2  text-white font-semibold px-1 py-1 rounded-sm text-2xl">
+                <AiOutlineSend className="text-black" />
+              </button>
+            </form>
           </div>
         </div>
       </div>
